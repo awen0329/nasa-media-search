@@ -10,7 +10,7 @@ const defaultTheme = createTheme({
       contrastText: "#FFFFFF",
     },
     text: {
-      disabled: "#FAFAFA",
+      disabled: "#203255",
     },
   },
 })
