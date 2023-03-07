@@ -1,8 +1,8 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom"
 import { PageContainer } from "../components/PageContainer"
-import { FilterConditions } from "../types"
+import { FilterConditions, MediaItem } from "../types"
 import {
   Accordion,
   AccordionDetails,
@@ -19,9 +19,12 @@ import {
 import { useGetImageCollections } from "../queries/nasa"
 import { MediaCard } from "../components/MediaCard"
 import { getFilterConditions, getFilterConditionsFromURLSearchParams } from "../modules/utils"
+import { LoadMore } from "../components/LoadMore"
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [page, setPage] = useState<number>(1)
+  const [items, setItems] = useState<MediaItem[]>([])
   const [filters, setFilters] = useState<FilterConditions>(
     getFilterConditionsFromURLSearchParams(searchParams)
   )
@@ -46,8 +49,8 @@ const Search = () => {
     } as FilterConditions,
   })
 
-  const { data, isLoading, error } = useGetImageCollections(filters)
-  console.log(data, isLoading, error)
+  const { data, isLoading, error } = useGetImageCollections(filters, page)
+  const links = data?.data.collection.links
 
   const handleSearch = (formValue: FilterConditions) => {
     const filterParams = getFilterConditions(formValue)
@@ -70,6 +73,12 @@ const Search = () => {
       secondary_creator: "",
     })
   }
+
+  useEffect(() => {
+    if (data) {
+      setItems((items) => [...items, ...data.data.collection.items])
+    }
+  }, [data])
 
   return (
     <PageContainer title="Image Collections" paths={[{ label: "Image collections" }]}>
@@ -278,16 +287,20 @@ const Search = () => {
       <Box>
         {error ? (
           <Typography.Description>Something went wrong</Typography.Description>
-        ) : isLoading ? (
-          <Box display="flex" p={3} justifyContent="center">
-            <CircularProgress />
-          </Box>
         ) : (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "space-between" }}>
-            {data?.data.collection.items.map((item, index) => (
+            {items.map((item, index) => (
               <MediaCard key={index} media={item} />
             ))}
           </Box>
+        )}
+        {isLoading && (
+          <Box display="flex" p={3} justifyContent="center">
+            <CircularProgress />
+          </Box>
+        )}
+        {links && links[links.length - 1].rel === "next" && (
+          <LoadMore isLoading={isLoading} onLoad={() => setPage((page) => page + 1)} />
         )}
       </Box>
     </PageContainer>
