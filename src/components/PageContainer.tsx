@@ -1,14 +1,15 @@
 import React from "react"
 
-import { Typography, Box, AppBar, Toolbar } from "../UILibrary"
+import { Typography, Box, AppBar, Toolbar, Breadcrumbs, Link } from "../UILibrary"
 
 export const PageContainer: React.FC<
   React.PropsWithChildren<{
     title?: string
+    paths?: { label: string; link?: string }[]
   }>
-> = ({ children, title }) => {
+> = ({ children, title, paths }) => {
   return (
-    <Box sx={{ bgcolor: "text.disabled" }}>
+    <Box sx={{ bgcolor: "text.disabled", minHeight: "100vh" }}>
       <AppBar position="sticky" sx={{ bgcolor: "text.disabled", opacity: 0.8 }}>
         <Toolbar>
           <Typography.Heading sx={{ color: "background.default" }}>
@@ -23,7 +24,7 @@ export const PageContainer: React.FC<
               display: "flex",
               pt: "1.5rem",
               pb: "1rem",
-              alignItems: "center",
+              flexDirection: "column",
             }}
           >
             <Typography.Heading
@@ -35,6 +36,24 @@ export const PageContainer: React.FC<
             >
               {title}
             </Typography.Heading>
+            {paths && (
+              <Breadcrumbs
+                separator={
+                  <Typography.Action sx={{ color: "background.default" }}>{">"}</Typography.Action>
+                }
+              >
+                {paths.map(({ label, link }) => (
+                  <Link
+                    key={label}
+                    underline="hover"
+                    href={link}
+                    sx={{ color: "background.default", fontSize: "0.75rem" }}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </Breadcrumbs>
+            )}
           </Box>
         )}
         {children}

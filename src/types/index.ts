@@ -49,3 +49,25 @@ export type MediaItem = {
     location?: string
   }[]
 }
+
+export type MediaData = {
+  assets: {
+    collection: {
+      href: string
+      items: {
+        href: string
+      }[]
+      version: string
+    }
+  }
+  mediaInfo: {
+    "AVAIL:Center": string
+    "AVAIL:DateCreated": string
+    "AVAIL:Description": string
+    "AVAIL:Keywords": string[]
+    "AVAIL:Location": string
+    "AVAIL:NASAID": string
+    "AVAIL:Photographer": string
+    "AVAIL:Title": string
+  }
+}

@@ -1,4 +1,5 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import { MediaItem } from "../types"
 
 import { Image, Typography, Box, Paper } from "../UILibrary"
@@ -8,8 +9,9 @@ interface MediaCardProps {
 }
 
 export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
+  const navigate = useNavigate()
   const { links, data } = media
-  const { title, photographer, location } = data[0]
+  const { nasa_id, title, photographer, location } = data[0]
 
   return (
     <Box
@@ -25,6 +27,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
           cursor: "pointer",
         },
       }}
+      onClick={() => navigate(`/detail/${nasa_id}`)}
     >
       <Box
         sx={{

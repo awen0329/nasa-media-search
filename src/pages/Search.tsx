@@ -14,14 +14,18 @@ import {
   Grid,
   LabelField,
   Paper,
+  Typography,
 } from "../UILibrary"
 import { useGetImageCollections } from "../queries/nasa"
 import { MediaCard } from "../components/MediaCard"
-import { getFilterConditions } from "../modules/utils"
+import { getFilterConditions, getFilterConditionsFromURLSearchParams } from "../modules/utils"
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [filters, setFilters] = useState<FilterConditions>({})
+  const [filters, setFilters] = useState<FilterConditions>(
+    getFilterConditionsFromURLSearchParams(searchParams)
+  )
+  const [expanded, setExpanded] = useState<boolean>(false)
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -49,6 +53,7 @@ const Search = () => {
     const filterParams = getFilterConditions(formValue)
     setSearchParams({ ...filterParams } as URLSearchParamsInit)
     setFilters(filterParams)
+    setExpanded(false)
   }
 
   const handleResetConditions = () => {
@@ -67,10 +72,12 @@ const Search = () => {
   }
 
   return (
-    <PageContainer title="Image Collections">
+    <PageContainer title="Image Collections" paths={[{ label: "Image collections" }]}>
       <Box>
         <Accordion
+          expanded={expanded}
           disableGutters
+          onChange={(_, expanded) => setExpanded(expanded)}
           sx={{
             boxShadow: "none",
             marginBottom: "1.5rem",
@@ -269,10 +276,14 @@ const Search = () => {
         </Accordion>
       </Box>
       <Box>
-        {isLoading ? (
-          <CircularProgress size="small" />
+        {error ? (
+          <Typography.Description>Something went wrong</Typography.Description>
+        ) : isLoading ? (
+          <Box display="flex" p={3} justifyContent="center">
+            <CircularProgress />
+          </Box>
         ) : (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "space-between" }}>
             {data?.data.collection.items.map((item, index) => (
               <MediaCard key={index} media={item} />
             ))}
