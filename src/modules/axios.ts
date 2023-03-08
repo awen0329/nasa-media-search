@@ -1,8 +1,8 @@
-import axios from "axios"
+import Axios from "axios"
 
 export const getApiClient = () => {
   const baseURL = `${process.env.REACT_APP_NASA_API}`
-  return axios.create({
+  return Axios.create({
     baseURL,
   })
 }

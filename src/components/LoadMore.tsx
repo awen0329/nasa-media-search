@@ -31,7 +31,7 @@ export const LoadMore = ({ onLoad, isLoading }: LoadMoreProps) => {
         marginBottom: "0.5rem",
       }}
     >
-      <CircularProgress sx={{ color: "primary.main" }} size="30px" />
+      <CircularProgress sx={{ color: "primary.main" }} />
     </Box>
   )
 }

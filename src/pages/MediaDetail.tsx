@@ -1,6 +1,11 @@
 import React from "react"
 import { useParams } from "react-router-dom"
 import { PageContainer } from "../components/PageContainer"
+import {
+  MEDIA_DETAIL_CONTAINER_TEST_ID,
+  MEDIA_DETAIL_ERROR_TEST_ID,
+  MEDIA_DETAIL_LOADING_TEST_ID,
+} from "../constants"
 import { useGetMediaData } from "../queries/nasa"
 import { Box, CircularProgress, Grid, Image, Typography } from "../UILibrary"
 
@@ -8,10 +13,15 @@ const MediaDetail = () => {
   const { nasaId } = useParams()
   const { data, isLoading, error } = useGetMediaData(nasaId || "")
 
-  console.log(data, isLoading, error)
   if (error) {
     return (
-      <Box display="flex" justifyContent="center" height="100vh" alignItems="center">
+      <Box
+        data-testid={MEDIA_DETAIL_ERROR_TEST_ID}
+        display="flex"
+        justifyContent="center"
+        height="100vh"
+        alignItems="center"
+      >
         <Typography.SubTitle>{error.message}</Typography.SubTitle>
       </Box>
     )
@@ -19,7 +29,14 @@ const MediaDetail = () => {
 
   if (isLoading && !data) {
     return (
-      <Box display="flex" justifyContent="center" height="100vh" alignItems="center">
+      <Box
+        data-testid={MEDIA_DETAIL_LOADING_TEST_ID}
+        display="flex"
+        justifyContent="center"
+        height="100vh"
+        alignItems="center"
+        sx={{ bgcolor: "text.disabled" }}
+      >
         <CircularProgress />
       </Box>
     )
@@ -27,6 +44,7 @@ const MediaDetail = () => {
 
   return (
     <PageContainer
+      data-testid={MEDIA_DETAIL_CONTAINER_TEST_ID}
       title={data?.mediaInfo["AVAIL:Title"]}
       paths={[{ label: "Image collections", link: "/search" }, { label: "Detail" }]}
     >

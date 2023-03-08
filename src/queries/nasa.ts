@@ -8,6 +8,7 @@ const getImageCollections = (params: FilterConditions, page: number) => {
     params: {
       media_type: "image",
       page,
+      page_size: 20,
       ...params,
     },
   })

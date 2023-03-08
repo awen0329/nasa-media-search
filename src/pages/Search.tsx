@@ -54,8 +54,8 @@ const Search = () => {
 
   const handleSearch = (formValue: FilterConditions) => {
     const filterParams = getFilterConditions(formValue)
-    setSearchParams({ ...filterParams } as URLSearchParamsInit)
     setFilters(filterParams)
+    setSearchParams({ ...filters } as URLSearchParamsInit)
     setExpanded(false)
   }
 
@@ -79,6 +79,11 @@ const Search = () => {
       setItems((items) => [...items, ...data.data.collection.items])
     }
   }, [data])
+
+  useEffect(() => {
+    setPage(1)
+    setItems([])
+  }, [filters])
 
   return (
     <PageContainer title="Image Collections" paths={[{ label: "Image collections" }]}>

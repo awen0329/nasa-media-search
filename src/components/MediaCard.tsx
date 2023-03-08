@@ -1,5 +1,10 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import {
+  MEDIA_CARD_CONTIANER_TEST_ID,
+  MEDIA_CARD_LOCATION_TYPO_TEST_ID,
+  MEDIA_CARD_PHOTOGRAPHER_TYPO_TEST_ID,
+} from "../constants"
 import { MediaItem } from "../types"
 
 import { Image, Typography, Box, Paper } from "../UILibrary"
@@ -16,6 +21,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
   return (
     <Box
       component={Paper}
+      data-testid={MEDIA_CARD_CONTIANER_TEST_ID}
       sx={{
         p: 1,
         display: { xs: "flex", md: "block" },
@@ -59,17 +65,15 @@ export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
           {title}
         </Typography.Description>
         {location && (
-          <Typography.Description
-            sx={{
-              lineHeight: "1.25rem",
-              mb: { xs: 0.5, md: 1 },
-              maxLines: 2,
-            }}
-          >
+          <Typography.Description data-testid={MEDIA_CARD_LOCATION_TYPO_TEST_ID}>
             Location: {location}
           </Typography.Description>
         )}
-        {photographer && <Typography.Action>Creator: {photographer}</Typography.Action>}
+        {photographer && (
+          <Typography.Action data-testid={MEDIA_CARD_PHOTOGRAPHER_TYPO_TEST_ID}>
+            Creator: {photographer}
+          </Typography.Action>
+        )}
       </Box>
     </Box>
   )

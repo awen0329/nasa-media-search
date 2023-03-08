@@ -1,4 +1,5 @@
 import React from "react"
+import { PAGE_CONTAINER_TEST_ID } from "../constants"
 
 import { Typography, Box, AppBar, Toolbar, Breadcrumbs, Link } from "../UILibrary"
 
@@ -9,7 +10,7 @@ export const PageContainer: React.FC<
   }>
 > = ({ children, title, paths }) => {
   return (
-    <Box sx={{ bgcolor: "text.disabled", minHeight: "100vh" }}>
+    <Box data-testid={PAGE_CONTAINER_TEST_ID} sx={{ bgcolor: "text.disabled", minHeight: "100vh" }}>
       <AppBar position="sticky" sx={{ bgcolor: "text.disabled", opacity: 0.8 }}>
         <Toolbar>
           <Typography.Heading sx={{ color: "background.default" }}>
